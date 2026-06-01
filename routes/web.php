@@ -244,3 +244,6 @@ Route::post('/cancel-request/{id}', [BuyRequestController::class, 'cancel']);
 Route::get('/health', function () {
     return response('OK', 200);
 });
+Route::get('/test123', function () {
+    return 'HELLO_RENDER';
+});
