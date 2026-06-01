@@ -251,3 +251,6 @@ Route::get('/test123', function () {
 Route::get('/routes-test', function () {
     return 'ROUTES_LOADED';
 });
+Route::get('/render-test', function () {
+    return 'RENDER_WORKS';
+});
