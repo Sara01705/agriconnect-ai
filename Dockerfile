@@ -18,7 +18,7 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
-RUN pip3 install --break-system-packages -r requirements.txt
+RUN pip3 install --break-system-packages -r AI/requirements.txt
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
