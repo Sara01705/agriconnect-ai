@@ -26,4 +26,4 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
 
 EXPOSE 10000
 
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
+CMD php artisan route:list && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
