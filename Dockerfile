@@ -16,13 +16,22 @@ WORKDIR /app
 
 COPY . .
 
+# PHP dependencies
 RUN composer install --no-dev --optimize-autoloader
 
+# Python dependencies
 RUN pip3 install --break-system-packages -r AI/requirements.txt
 
+# Node.js + frontend build
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     npm install && npm run build
+
+# Clear Laravel caches
+RUN php artisan config:clear || true
+RUN php artisan route:clear || true
+RUN php artisan cache:clear || true
+RUN php artisan view:clear || true
 
 EXPOSE 10000
 
