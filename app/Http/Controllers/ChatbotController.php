@@ -23,7 +23,7 @@ class ChatbotController extends Controller
         $price = $matches[0] ?? null;
 
         // Path to local python executable
-        $python = "C:\\Users\\sarat\\AppData\\Local\\Programs\\Python\\Python310\\python.exe";
+        $python = env('PYTHON_PATH', 'python3');
         $script = base_path("AI/chatbot_nlp.py");
 
         // Transmit request to Python NLP intent model

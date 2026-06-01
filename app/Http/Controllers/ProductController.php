@@ -32,7 +32,7 @@ public function index(Request $request)
 
         if($hasOrders){
 
-            $pythonPath = "C:\\Users\\sarat\\AppData\\Local\\Programs\\Python\\Python310\\python.exe";
+           $python = env('PYTHON_PATH', 'python3');
             $scriptPath = base_path("AI/recommend.py");
 
             $command = "\"$pythonPath\" \"$scriptPath\" $userId";
