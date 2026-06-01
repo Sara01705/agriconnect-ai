@@ -1,0 +1,166 @@
+.product-img{
+    height:180px;
+    object-fit:cover;
+}
+.card{
+    border-radius:12px;
+}
+.card:hover{
+    transform:scale(1.03);
+    transition:0.3s;
+}
+.product-main-img{
+    width:420px;
+    height:420px;
+    object-fit:cover;
+    border-radius:12px;
+}
+.product-card img{
+    height:180px;
+    object-fit:cover;
+}
+
+/* ==========================================================================
+   GLASSMORPHISM STYLING UTILITY TOKENS
+   ========================================================================== */
+
+@keyframes glassFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.55) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), inset 0 0 0 1px rgba(255, 255, 255, 0.35) !important;
+    border-radius: 1.5rem !important;
+    padding: 2.25rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    animation: glassFadeIn 0.5s ease both !important;
+}
+
+.glass-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), inset 0 0 0 1px rgba(255, 255, 255, 0.45) !important;
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.75) !important;
+    border: 1.5px solid rgba(40, 167, 69, 0.25) !important;
+    border-radius: 1rem !important;
+    padding: 0.75rem 1.1rem !important;
+    transition: all 0.25s ease !important;
+    color: #1f2937 !important;
+    font-size: 0.925rem !important;
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.98) !important;
+    border-color: #28a745 !important;
+    box-shadow: 0 0 0 4px rgba(40, 167, 69, 0.15) !important;
+    outline: none !important;
+}
+
+.glass-input-icon {
+    position: absolute;
+    top: 50%;
+    left: 1.2rem;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    color: #6b7280;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.glass-input-with-icon {
+    padding-left: 2.85rem !important;
+}
+
+.glass-btn-green {
+    background: linear-gradient(135deg, #1e7e34, #28a745) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 1rem !important;
+    font-weight: 700 !important;
+    padding: 0.75rem 1.5rem !important;
+    box-shadow: 0 4px 14px rgba(40, 167, 69, 0.3) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    text-align: center;
+}
+
+.glass-btn-green:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4) !important;
+    filter: brightness(1.08) !important;
+    color: white !important;
+}
+
+.glass-btn-green:active {
+    transform: translateY(0) !important;
+}
+
+.glass-btn-secondary {
+    background: rgba(243, 244, 246, 0.8) !important;
+    border: 1px solid rgba(209, 213, 219, 0.8) !important;
+    color: #4b5563 !important;
+    border-radius: 1rem !important;
+    font-weight: 700 !important;
+    padding: 0.75rem 1.5rem !important;
+    transition: all 0.2s !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02) !important;
+    text-align: center;
+}
+
+.glass-btn-secondary:hover {
+    background: rgba(229, 231, 235, 0.95) !important;
+    color: #1f2937 !important;
+    transform: translateY(-1px) !important;
+}
+
+.glass-btn-danger {
+    background: linear-gradient(135deg, #dc2626, #ef4444) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 1rem !important;
+    font-weight: 700 !important;
+    padding: 0.75rem 1.5rem !important;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    text-align: center;
+}
+
+.glass-btn-danger:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4) !important;
+    filter: brightness(1.08) !important;
+    color: white !important;
+}
+
+.glass-title-green {
+    color: #1e7e34;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-size: 1.65rem;
+}
+
+.glass-title-red {
+    color: #dc2626;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-size: 1.65rem;
+}
+
+.glass-label {
+    font-weight: 600;
+    color: #2d4a35;
+    font-size: 0.875rem;
+    margin-bottom: 0.4rem;
+}

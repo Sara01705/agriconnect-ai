@@ -1,0 +1,17 @@
+{
+    "crops": [
+        "Cotton",
+        "Maize",
+        "Onion",
+        "Potato",
+        "Rice",
+        "Tomato",
+        "Wheat"
+    ],
+    "seasons": [
+        "Kharif",
+        "Rabi",
+        "Summer",
+        "Whole Year"
+    ]
+}

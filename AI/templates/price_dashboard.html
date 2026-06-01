@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriConnect AI | Crop Price Prediction Dashboard</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* ── Modern Premium Glassmorphism Design System ── */
+        :root {
+            --primary: #1e7e34;
+            --primary-light: #28a745;
+            --primary-dark: #145523;
+            --accent: #52c96e;
+            --accent-glow: rgba(40, 167, 69, 0.25);
+            --bg-gradient: linear-gradient(135deg, #f0f7f4 0%, #e6f3eb 50%, #d8ecd8 100%);
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --text-main: #233e29;
+            --text-muted: #53755b;
+            --shadow-sm: 0 4px 6px -1px rgba(20, 60, 30, 0.05);
+            --shadow-md: 0 10px 15px -3px rgba(20, 60, 30, 0.08), 0 4px 6px -2px rgba(20, 60, 30, 0.05);
+            --shadow-lg: 0 20px 25px -5px rgba(20, 60, 30, 0.1), 0 10px 10px -5px rgba(20, 60, 30, 0.04);
+            --card-radius: 20px;
+            --input-radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            padding: 30px 15px;
+            line-height: 1.5;
+        }
+
+        /* ── Layout & Wrapper ── */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* ── Header Area ── */
+        .glass-header {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            padding: 24px 36px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(16px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-header::before {
+            content: '';
+            position: absolute;
+            top: -50px; right: -50px;
+            width: 150px; height: 150px;
+            border-radius: 50%;
+            background: rgba(40, 167, 69, 0.08);
+            filter: blur(20px);
+        }
+
+        .brand-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: white;
+            box-shadow: 0 8px 16px var(--accent-glow);
+            animation: bounceIn 0.8s ease;
+        }
+
+        .brand-title h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .brand-title p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(40, 167, 69, 0.12);
+            border: 1px solid rgba(40, 167, 69, 0.25);
+            color: var(--primary-dark);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 10px var(--primary-light);
+            animation: pulse 1.8s infinite;
+        }
+
+        /* ── Main Dashboard Content Grid ── */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 28px;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ── Glass Cards Base ── */
+        .glass-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(16px);
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .glass-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header-icon {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            border-bottom: 2.5px solid #e2efe6;
+            padding-bottom: 12px;
+            margin-bottom: 22px;
+        }
+
+        /* ── Prediction Input Form ── */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 6px;
+        }
+
+        .form-control, .form-select {
+            width: 100%;
+            border: 1.5px solid #c7dfcd;
+            border-radius: var(--input-radius);
+            padding: 10px 14px;
+            font-size: 0.9rem;
+            background: rgba(250, 253, 251, 0.8);
+            color: var(--text-main);
+            transition: all 0.25s ease;
+            outline: none;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-light);
+            background: #ffffff;
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        /* Range Slider Styling */
+        .slider-container {
+            margin-top: 8px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 10px;
+            background: #d6eade;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(40, 167, 69, 0.4);
+            transition: transform 0.1s;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .input-unit-group {
+            position: relative;
+        }
+
+        .input-unit {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .btn-predict {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+            color: white;
+            border: none;
+            border-radius: var(--input-radius);
+            padding: 12px 20px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(40, 167, 69, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 24px;
+        }
+
+        .btn-predict:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(40, 167, 69, 0.4);
+            filter: brightness(1.08);
+        }
+
+        .btn-predict:active {
+            transform: translateY(0);
+        }
+
+        /* ── Right Panel: Results & Visualization ── */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+        }
+
+        /* ── Metric Cards Grid ── */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .metric-card::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+        }
+
+        .metric-card.primary::before { background: var(--primary-light); }
+        .metric-card.success::before { background: #28a745; }
+        .metric-card.info::before { background: #007bff; }
+        .metric-card.accent::before { background: #fd7e14; }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .metric-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .metric-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 4px 0;
+        }
+
+        .metric-change {
+            font-size: 0.78rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 20px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        .metric-change.positive {
+            background: rgba(40, 167, 69, 0.12);
+            color: #1e7e34;
+        }
+
+        .metric-change.negative {
+            background: rgba(220, 53, 69, 0.12);
+            color: #dc3545;
+        }
+
+        /* ── Market Insights Section ── */
+        .insights-container {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .insights-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .insight-badge-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .insight-badge {
+            font-size: 0.74rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .insight-badge.danger {
+            background: rgba(220, 53, 69, 0.12);
+            color: #dc3545;
+            border: 1px solid rgba(220, 53, 69, 0.2);
+        }
+
+        .insight-badge.warning {
+            background: rgba(253, 126, 20, 0.12);
+            color: #fd7e14;
+            border: 1px solid rgba(253, 126, 20, 0.2);
+        }
+
+        .insight-badge.success {
+            background: rgba(40, 167, 69, 0.12);
+            color: #28a745;
+            border: 1px solid rgba(40, 167, 69, 0.2);
+        }
+
+        .insight-alert-box {
+            border-left: 4px solid var(--primary-light);
+            background: linear-gradient(90deg, rgba(40, 167, 69, 0.05) 0%, rgba(255,255,255,0) 100%);
+            padding: 12px 18px;
+            border-radius: 0 10px 10px 0;
+            margin-top: 14px;
+        }
+
+        .insight-alert-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+
+        .insight-alert-desc {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* ── Model Metrics Table ── */
+        .metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            margin-top: 10px;
+        }
+
+        .metrics-table th {
+            text-align: left;
+            padding: 8px 10px;
+            border-bottom: 2px solid #e2efe6;
+            color: var(--text-muted);
+            font-weight: 700;
+        }
+
+        .metrics-table td {
+            padding: 10px;
+            border-bottom: 1px solid #ebf4ed;
+            font-weight: 500;
+        }
+
+        .metrics-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ── Charts Panel ── */
+        .chart-wrapper {
+            margin-top: 10px;
+            height: 260px;
+            position: relative;
+        }
+
+        /* ── History Table Area ── */
+        .glass-table-card {
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+
+        .history-table th {
+            background: rgba(40, 167, 69, 0.05);
+            padding: 16px 20px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            border-bottom: 2px solid #e0efe3;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            letter-spacing: 0.8px;
+        }
+
+        .history-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #ebf3ec;
+            color: var(--text-main);
+        }
+
+        .history-table tr:hover td {
+            background: rgba(40, 167, 69, 0.02);
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge-percentage {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+
+        .badge-percentage.rise {
+            background: rgba(40, 167, 69, 0.1);
+            color: #1e7e34;
+        }
+
+        .badge-percentage.drop {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+        }
+
+        .badge-model {
+            background: rgba(0, 123, 255, 0.08);
+            border: 1px solid rgba(0, 123, 255, 0.18);
+            color: #0056b3;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.74rem;
+        }
+
+        /* ── Retraining Modal Trigger Button ── */
+        .btn-train {
+            background: transparent;
+            border: 1.5px solid var(--primary-light);
+            color: var(--primary);
+            border-radius: var(--input-radius);
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-train:hover {
+            background: var(--primary-light);
+            color: white;
+            box-shadow: 0 4px 10px var(--accent-glow);
+        }
+
+        /* ── Animations ── */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.4); }
+            70% { transform: scale(1.05); opacity: 0.8; box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
+            100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+        }
+
+        @keyframes bounceIn {
+            from { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 0.9; transform: scale(1.1); }
+            80% { opacity: 0.95; transform: scale(0.89); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Fade loading indicator */
+        .loading-overlay {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.85);
+            z-index: 10;
+            border-radius: var(--card-radius);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.92rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3.5px solid #d1edd9;
+            border-top-color: var(--primary-light);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard-container">
+    
+    <!-- ── HEADER ── -->
+    <header class="glass-header">
+        <div class="brand-section">
+            <div class="logo-box">
+                <i class="bi bi-graph-up-arrow"></i>
+            </div>
+            <div class="brand-title">
+                <h1>AgriConnect AI</h1>
+                <p>Crop Price Prediction & Market Insights Dashboard</p>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn-train" id="btnRetrain" onclick="retrainModels()">
+                <i class="bi bi-arrow-repeat"></i> Retrain Models
+            </button>
+            <div class="status-badge">
+                <span class="status-dot"></span>
+                <span>Prediction Engine Active</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ── MAIN GRID ── -->
+    <main class="dashboard-grid">
+        
+        <!-- ── LEFT SIDEBAR: INPUT PARAMETERS ── -->
+        <section class="glass-card">
+            <div class="loading-overlay" id="formLoading">
+                <div class="spinner"></div>
+                <span>Analyzing crop features...</span>
+            </div>
+
+            <div class="card-header-icon">
+                <i class="bi bi-sliders2"></i> Prediction Parameters
+            </div>
+            
+            <form id="predictionForm" onsubmit="submitPrediction(event)">
+                
+                <!-- Crop Name -->
+                <div class="form-group">
+                    <label class="form-label" for="crop_name">Crop Name</label>
+                    <select class="form-select" id="crop_name" required onchange="onCropChange()">
+                        {% for crop in crops %}
+                            <option value="{{ crop }}">{{ crop }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Model Selection -->
+                <div class="form-group">
+                    <label class="form-label" for="model_type">Regression Model</label>
+                    <select class="form-select" id="model_type" required>
+                        <option value="Random Forest" selected>Random Forest Regressor (Recommended)</option>
+                        <option value="Decision Tree">Decision Tree Regressor</option>
+                        <option value="Linear Regression">Linear Regression (Comparison)</option>
+                        {% if metrics.XGBoost %}
+                            <option value="XGBoost">XGBoost Regressor</option>
+                        {% endif %}
+                    </select>
+                </div>
+
+                <!-- Season Selection -->
+                <div class="form-group">
+                    <label class="form-label" for="season">Season</label>
+                    <select class="form-select" id="season" required>
+                        {% for season in seasons %}
+                            <option value="{{ season }}">{{ season }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Demand (1-100 Range Slider) -->
+                <div class="form-group">
+                    <div class="slider-header">
+                        <label class="form-label" style="margin-bottom:0;">Market Demand</label>
+                        <span id="demandVal" style="font-weight:700;color:var(--primary)">80%</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" class="range-slider" id="demand" min="1" max="100" value="80" oninput="updateSliderVal('demand')">
+                    </div>
+                </div>
+
+                <!-- Supply (1-100 Range Slider) -->
+                <div class="form-group">
+                    <div class="slider-header">
+                        <label class="form-label" style="margin-bottom:0;">Market Supply</label>
+                        <span id="supplyVal" style="font-weight:700;color:var(--primary)">35%</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" class="range-slider" id="supply" min="1" max="100" value="35" oninput="updateSliderVal('supply')">
+                    </div>
+                </div>
+
+                <!-- Rainfall -->
+                <div class="form-group">
+                    <label class="form-label" for="rainfall">Average Rainfall</label>
+                    <div class="input-unit-group">
+                        <input type="number" step="0.1" class="form-control" id="rainfall" value="120.0" min="0" required>
+                        <span class="input-unit">mm</span>
+                    </div>
+                </div>
+
+                <!-- Temperature -->
+                <div class="form-group">
+                    <label class="form-label" for="temperature">Average Temperature</label>
+                    <div class="input-unit-group">
+                        <input type="number" step="0.1" class="form-control" id="temperature" value="28.5" required>
+                        <span class="input-unit">°C</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-predict">
+                    <i class="bi bi-lightning-charge-fill"></i> Generate Price Prediction
+                </button>
+            </form>
+        </section>
+
+        <!-- ── RIGHT AREA: RESULTS & VISUALIZATION ── -->
+        <section class="right-panel">
+            
+            <!-- ── METRICS DISPLAY CARDS ── -->
+            <div class="metrics-grid">
+                
+                <!-- Current Price Card -->
+                <div class="metric-card primary">
+                    <span class="metric-label">Current Price</span>
+                    <span class="metric-value" id="resCurrentPrice">₹25.00</span>
+                    <span style="font-size:0.7rem;color:var(--text-muted)">Historical Average Basis</span>
+                </div>
+
+                <!-- Predicted Future Price Card -->
+                <div class="metric-card success">
+                    <span class="metric-label">Predicted Future Price</span>
+                    <span class="metric-value" style="color:#28a745" id="resPredictedPrice">₹37.50</span>
+                    <span style="font-size:0.7rem;color:var(--text-muted)" id="resModelName">Random Forest Regressor</span>
+                </div>
+
+                <!-- Percentage Increase/Decrease Card -->
+                <div class="metric-card info">
+                    <span class="metric-label">Price Change</span>
+                    <span class="metric-value" id="resPercentageTitle">+50.0%</span>
+                    <span class="metric-change positive" id="resPercentageBadge">
+                        <i class="bi bi-arrow-up-right-circle-fill"></i> Price Increase
+                    </span>
+                </div>
+
+                <!-- Best Time to Sell Card -->
+                <div class="metric-card accent">
+                    <span class="metric-label">Best Time to Sell</span>
+                    <span class="metric-value" style="font-size:0.9rem;font-weight:800;color:#fd7e14;margin:8px 0;" id="resBestTime">
+                        October to December
+                    </span>
+                    <span style="font-size:0.7rem;color:var(--text-muted)">Harvest Peak Demand</span>
+                </div>
+            </div>
+
+            <!-- ── TWO-COLUMN DETAILED RESULTS & ACCURACY COMPARISON ── -->
+            <div class="insights-container">
+                
+                <!-- Market Insights Frosted Card -->
+                <div class="glass-card" style="padding: 24px;">
+                    <div class="card-header-icon" style="margin-bottom:14px;padding-bottom:8px;">
+                        <i class="bi bi-lightbulb-fill"></i> Market Insights
+                    </div>
+                    
+                    <div class="insight-badge-box">
+                        <span class="insight-badge success" id="resDemandBadge">High Demand</span>
+                        <span class="insight-badge danger" id="resSupplyBadge">Low Supply</span>
+                    </div>
+
+                    <div class="insight-alert-box" id="resInsightBox">
+                        <div class="insight-alert-title" id="resTrendTitle">Expected Price Rise</div>
+                        <div class="insight-alert-desc" id="resAdviceDesc">
+                            Strong demand combined with low market supply is creating strong upward price pressure. If you have crop storage capacity, hold inventory and release standard batches to secure premium prices.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ML Model Evaluation Comparison Frosted Card -->
+                <div class="glass-card" style="padding: 24px;">
+                    <div class="card-header-icon" style="margin-bottom:14px;padding-bottom:8px;">
+                        <i class="bi bi-check-circle-fill"></i> Algorithmic Evaluation
+                    </div>
+                    
+                    <table class="metrics-table" id="metricsTable">
+                        <thead>
+                            <tr>
+                                <th>ML Algorithm</th>
+                                <th>MAE</th>
+                                <th>R² Accuracy</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for algo, data in metrics.items() %}
+                            <tr {% if algo == 'Random Forest' %}style="background:rgba(40, 167, 69, 0.05);color:var(--primary-dark);font-weight:700;"{% endif %}>
+                                <td>
+                                    {% if algo == 'Random Forest' %}🏆 {% endif %}{{ algo }}
+                                </td>
+                                <td>₹{{ data.mae }}</td>
+                                <td>{{ (data.r2_score * 100)|round(2) }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ── TREND CHART ── -->
+            <div class="glass-card">
+                <div class="card-header-icon" style="margin-bottom:14px;padding-bottom:8px;">
+                    <i class="bi bi-graph-up"></i> Projected Price Trend Charts
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ── PREDICTION HISTORY TABLE ── -->
+    <section class="glass-card glass-table-card">
+        <div style="padding:24px 30px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #ebf3ec;">
+            <div class="brand-title" style="display:flex; align-items:center; gap:8px; font-weight:700; color:var(--primary-dark)">
+                <i class="bi bi-journal-text" style="font-size:1.2rem;"></i> prediction log history
+            </div>
+            <span style="font-size:0.76rem;color:var(--text-muted);font-weight:600;">Showing Latest Entries</span>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="history-table" id="historyTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Timestamp</th>
+                        <th>Crop</th>
+                        <th>Season</th>
+                        <th>Demand/Supply</th>
+                        <th>Weather (Rain/Temp)</th>
+                        <th>Bench Price</th>
+                        <th>Predicted Price</th>
+                        <th>Variance</th>
+                        <th>Algorithm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in history %}
+                    <tr>
+                        <td>#{{ item.id }}</td>
+                        <td style="font-size:0.78rem;color:var(--text-muted);">{{ item.created_at }}</td>
+                        <td style="font-weight:700;">{{ item.crop_name }}</td>
+                        <td>{{ item.season }}</td>
+                        <td>
+                            <span style="font-weight:600;">D:{{ item.demand }}%</span> | 
+                            <span style="font-weight:600;color:var(--text-muted);">S:{{ item.supply }}%</span>
+                        </td>
+                        <td style="font-size:0.8rem;">{{ item.rainfall }}mm / {{ item.temperature }}°C</td>
+                        <td style="font-weight:600;">₹{{ "%.2f"|format(item.current_price) }}</td>
+                        <td style="font-weight:700;color:var(--primary)">₹{{ "%.2f"|format(item.predicted_price) }}</td>
+                        <td>
+                            <span class="badge-percentage {% if item.percentage_change >= 0 %}rise{% else %}drop{% endif %}">
+                                {% if item.percentage_change >= 0 %}+{% endif %}{{ item.percentage_change }}%
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge-model">{{ item.model_used }}</span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% if not history %}
+                    <tr>
+                        <td colspan="10" style="text-align:center;padding:30px;color:var(--text-muted);font-weight:600;">
+                            <i class="bi bi-info-circle me-1"></i> No predictions logged yet. Generate one above!
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+<script>
+    // Slider values
+    function updateSliderVal(id) {
+        const val = document.getElementById(id).value;
+        document.getElementById(id + 'Val').innerText = val + '%';
+    }
+
+    // Pre-populate input configurations when Crop dropdown changes
+    function onCropChange() {
+        const crop = document.getElementById('crop_name').value.toLowerCase();
+        
+        // Define realistic defaults for weather elements based on selected crop types
+        const cropDefaults = {
+            'tomato': { season: 'Kharif', rainfall: 150.0, temp: 28.5 },
+            'onion': { season: 'Rabi', rainfall: 50.0, temp: 22.0 },
+            'wheat': { season: 'Rabi', rainfall: 65.0, temp: 15.0 },
+            'rice': { season: 'Kharif', rainfall: 250.0, temp: 31.0 },
+            'potato': { season: 'Whole Year', rainfall: 85.0, temp: 23.5 },
+            'cotton': { season: 'Kharif', rainfall: 110.0, temp: 32.0 },
+            'maize': { season: 'Kharif', rainfall: 160.0, temp: 29.0 }
+        };
+
+        if (cropDefaults[crop]) {
+            document.getElementById('season').value = cropDefaults[crop].season;
+            document.getElementById('rainfall').value = cropDefaults[crop].rainfall;
+            document.getElementById('temperature').value = cropDefaults[crop].temp;
+        }
+    }
+
+    // Initialize Chart.js
+    let trendChart = null;
+    
+    function drawPriceChart(labels, currentData, predictedData) {
+        const ctx = document.getElementById('trendChart').getContext('2d');
+        
+        if (trendChart) {
+            trendChart.destroy();
+        }
+        
+        trendChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Standard Benchmark Price (₹)',
+                        data: currentData,
+                        borderColor: '#53755b',
+                        borderWidth: 2,
+                        borderDash: [6, 6],
+                        backgroundColor: 'transparent',
+                        tension: 0.3,
+                        pointRadius: 4
+                    },
+                    {
+                        label: 'Projected AI Model Price (₹)',
+                        data: predictedData,
+                        borderColor: '#28a745',
+                        borderWidth: 4,
+                        backgroundColor: 'rgba(40, 167, 69, 0.08)',
+                        fill: true,
+                        tension: 0.35,
+                        pointRadius: 6,
+                        pointBackgroundColor: '#1e7e34',
+                        pointHoverRadius: 8
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        labels: {
+                            font: { size: 11, weight: '600', family: 'Inter' },
+                            color: '#233e29'
+                        }
+                    },
+                    tooltip: {
+                        padding: 12,
+                        backgroundColor: 'rgba(35, 62, 41, 0.95)',
+                        titleFont: { size: 12, weight: '700', family: 'Outfit' },
+                        bodyFont: { size: 12, family: 'Inter' },
+                        callbacks: {
+                            label: function(context) {
+                                return ` ${context.dataset.label.split(' ')[0]} Price: ₹${context.raw.toFixed(2)}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        grid: { color: 'rgba(20, 60, 30, 0.05)' },
+                        ticks: {
+                            font: { size: 10, weight: '500' },
+                            color: '#53755b',
+                            callback: function(value) { return '₹' + value; }
+                        }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            font: { size: 10, weight: '600' },
+                            color: '#53755b'
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    // Simulate 6 months trends from current price to predicted price
+    function updateTrendChartSimulation(currentPrice, predictedPrice, season) {
+        const labels = ['Current Month', 'Month +1', 'Month +2 (Peak)', 'Month +3', 'Month +4', 'Month +5 (Harvest Target)'];
+        
+        // Generate realistic non-linear fluctuations reflecting seasonal curves
+        const currentData = [];
+        const predictedData = [];
+        
+        let seasonalVariance = [0, 0.05, 0.12, 0.03, -0.04, 0.08];
+        if (season.toLowerCase() === 'kharif') {
+            seasonalVariance = [0, 0.08, 0.18, 0.12, -0.02, 0.05];
+        } else if (season.toLowerCase() === 'rabi') {
+            seasonalVariance = [0, 0.04, 0.15, 0.08, -0.08, 0.12];
+        }
+        
+        const priceDiff = predictedPrice - currentPrice;
+        
+        for (let i = 0; i < 6; i++) {
+            // Linear progression base
+            const progress = i / 5;
+            const baseCurrent = currentPrice * (1 + seasonalVariance[i] * 0.4);
+            
+            // Add slight curve for predicted progression
+            const basePredicted = currentPrice + (priceDiff * progress) + (predictedPrice * seasonalVariance[i] * 0.7);
+            
+            currentData.push(Math.max(1, baseCurrent));
+            predictedData.push(Math.max(1, basePredicted));
+        }
+
+        // Fix final month directly to prediction
+        predictedData[5] = predictedPrice;
+        
+        drawPriceChart(labels, currentData, predictedData);
+    }
+
+    // Call dynamic predictions on load
+    window.onload = function() {
+        onCropChange();
+        // Load default simulation chart
+        updateTrendChartSimulation(25.00, 37.50, 'Kharif');
+    };
+
+    // AJAX Form submission
+    function submitPrediction(event) {
+        event.preventDefault();
+        
+        const loader = document.getElementById('formLoading');
+        loader.classList.add('active');
+
+        const payload = {
+            crop_name: document.getElementById('crop_name').value,
+            model_type: document.getElementById('model_type').value,
+            season: document.getElementById('season').value,
+            demand: parseInt(document.getElementById('demand').value),
+            supply: parseInt(document.getElementById('supply').value),
+            rainfall: parseFloat(document.getElementById('rainfall').value),
+            temperature: parseFloat(document.getElementById('temperature').value)
+        };
+
+        fetch('/api/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("HTTP error " + response.status);
+            }
+            return response.json();
+        })
+        .then(data => {
+            loader.classList.remove('active');
+            if (data.status === 'success') {
+                // Update metrics cards with smooth text updates
+                document.getElementById('resCurrentPrice').innerText = '₹' + data.current_price.toFixed(2);
+                document.getElementById('resPredictedPrice').innerText = '₹' + data.predicted_price.toFixed(2);
+                document.getElementById('resModelName').innerText = data.model_used;
+                document.getElementById('resBestTime').innerText = data.best_time_to_sell.split(' (')[0];
+                
+                // Variance card
+                const sign = data.percentage_change >= 0 ? '+' : '';
+                document.getElementById('resPercentageTitle').innerText = sign + data.percentage_change.toFixed(1) + '%';
+                
+                const pctBadge = document.getElementById('resPercentageBadge');
+                if (data.percentage_change >= 0) {
+                    pctBadge.className = 'metric-change positive';
+                    pctBadge.innerHTML = '<i class="bi bi-arrow-up-right-circle-fill"></i> Price Increase';
+                } else {
+                    pctBadge.className = 'metric-change negative';
+                    pctBadge.innerHTML = '<i class="bi bi-arrow-down-left-circle-fill"></i> Price Decrease';
+                }
+
+                // Insights cards
+                const demandBadge = document.getElementById('resDemandBadge');
+                demandBadge.innerText = data.market_insights.demand_status;
+                if (data.market_insights.demand_status.toLowerCase() === 'high demand') {
+                    demandBadge.className = 'insight-badge success';
+                } else if (data.market_insights.demand_status.toLowerCase() === 'low demand') {
+                    demandBadge.className = 'insight-badge danger';
+                } else {
+                    demandBadge.className = 'insight-badge warning';
+                }
+
+                const supplyBadge = document.getElementById('resSupplyBadge');
+                supplyBadge.innerText = data.market_insights.supply_status;
+                if (data.market_insights.supply_status.toLowerCase() === 'high supply') {
+                    supplyBadge.className = 'insight-badge success';
+                } else if (data.market_insights.supply_status.toLowerCase() === 'low supply') {
+                    supplyBadge.className = 'insight-badge danger';
+                } else {
+                    supplyBadge.className = 'insight-badge warning';
+                }
+
+                // Insights Description Box
+                document.getElementById('resTrendTitle').innerText = data.market_insights.trend;
+                document.getElementById('resAdviceDesc').innerText = data.market_insights.advice;
+                
+                const insightBox = document.getElementById('resInsightBox');
+                if (data.market_insights.trend.includes('Rise')) {
+                    insightBox.style.borderLeftColor = '#28a745';
+                } else if (data.market_insights.trend.includes('Drop')) {
+                    insightBox.style.borderLeftColor = '#dc3545';
+                } else {
+                    insightBox.style.borderLeftColor = '#fd7e14';
+                }
+
+                // Update dynamic Chart simulation
+                updateTrendChartSimulation(data.current_price, data.predicted_price, data.season);
+
+                // Prepend prediction log table dynamically
+                prependLogToTable(data);
+            }
+        })
+        .catch(err => {
+            loader.classList.remove('active');
+            alert("❌ FAILED to get AI prediction. Please ensure the Flask ML server models are trained and packages are installed correctly.");
+            console.error(err);
+        });
+    }
+
+    // Dynamically prepend new log entries to the UI history table without a refresh
+    function prependLogToTable(data) {
+        const table = document.getElementById('historyTable').getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow(0);
+        
+        const timestamp = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        const pctClass = data.percentage_change >= 0 ? 'rise' : 'drop';
+        const pctSign = data.percentage_change >= 0 ? '+' : '';
+
+        newRow.innerHTML = `
+            <td>#NEW</td>
+            <td style="font-size:0.78rem;color:var(--text-muted);">${timestamp}</td>
+            <td style="font-weight:700;">${data.crop_name}</td>
+            <td>${data.season}</td>
+            <td>
+                <span style="font-weight:600;">D:${data.demand}%</span> | 
+                <span style="font-weight:600;color:var(--text-muted);">S:${data.supply}%</span>
+            </td>
+            <td style="font-size:0.8rem;">${data.rainfall}mm / ${data.temperature}°C</td>
+            <td style="font-weight:600;">₹${data.current_price.toFixed(2)}</td>
+            <td style="font-weight:700;color:var(--primary)">₹${data.predicted_price.toFixed(2)}</td>
+            <td>
+                <span class="badge-percentage ${pctClass}">
+                    ${pctSign}${data.percentage_change.toFixed(1)}%
+                </span>
+            </td>
+            <td>
+                <span class="badge-model">${data.model_used}</span>
+            </td>
+        `;
+
+        // Remove "No predictions logged yet" if it was present
+        if (table.rows.length > 1 && table.rows[table.rows.length-1].cells[0].colSpan === 10) {
+            table.deleteRow(table.rows.length-1);
+        }
+    }
+
+    // Trigger retraining from dashboard
+    function retrainModels() {
+        const btn = document.getElementById('btnRetrain');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" style="width:14px;height:14px;border:2px solid;border-top-color:transparent;border-radius:50%;display:inline-block;animation:spin 0.8s linear infinite;"></span> Training...';
+        
+        fetch('/api/train', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Retrain Models';
+            if (data.status === 'success') {
+                alert("🎉 ML models retrained successfully!\nAccuracy metrics updated on dashboard.");
+                
+                // Dynamically update accuracy table
+                const tableBody = document.getElementById('metricsTable').getElementsByTagName('tbody')[0];
+                tableBody.innerHTML = '';
+                
+                Object.keys(data.metrics).forEach(algo => {
+                    const accuracy = (data.metrics[algo].r2_score * 100).toFixed(2);
+                    const highlight = algo === 'Random Forest' ? 'style="background:rgba(40, 167, 69, 0.05);color:var(--primary-dark);font-weight:700;"' : '';
+                    const trophy = algo === 'Random Forest' ? '🏆 ' : '';
+                    
+                    const row = document.createElement('tr');
+                    if (highlight) {
+                        row.style.background = 'rgba(40, 167, 69, 0.05)';
+                        row.style.color = 'var(--primary-dark)';
+                        row.style.fontWeight = '700';
+                    }
+                    row.innerHTML = `
+                        <td>${trophy}${algo}</td>
+                        <td>₹${data.metrics[algo].mae.toFixed(2)}</td>
+                        <td>${accuracy}%</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } else {
+                alert("❌ Retraining failed: " + data.message);
+            }
+        })
+        .catch(err => {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-arrow-repeat"></i> Retrain Models';
+            alert("❌ Network error while retraining. Check server status.");
+            console.error(err);
+        });
+    }
+</script>
+
+</body>
+</html>

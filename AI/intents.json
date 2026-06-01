@@ -1,0 +1,200 @@
+{
+    "intents": [
+        {
+            "tag": "greeting",
+            "patterns": [
+                "hello",
+                "hi",
+                "hey",
+                "good morning",
+                "good evening",
+                "hello bot",
+                "hi chatbot"
+            ]
+        },
+        {
+            "tag": "help",
+            "patterns": [
+                "help",
+                "what can you do",
+                "how does this work",
+                "how to use this website",
+                "guide me",
+                "how to start"
+            ]
+        },
+        {
+            "tag": "buy_product",
+            "patterns": [
+                "how to buy product",
+                "how can i buy",
+                "how to place order",
+                "buy vegetables",
+                "purchase fruits",
+                "how to order",
+                "order product",
+                "buy items"
+            ]
+        },
+        {
+            "tag": "cheap_vegetables",
+            "patterns": [
+                "cheap vegetables",
+                "low price vegetables",
+                "affordable vegetables",
+                "vegetables under 50",
+                "cheap veggie",
+                "lowest price vegetables",
+                "show cheap vegetables"
+            ]
+        },
+        {
+            "tag": "cheap_fruits",
+            "patterns": [
+                "cheap fruits",
+                "affordable fruits",
+                "low price fruits",
+                "fruits under 50",
+                "cheap fruit",
+                "show cheap fruits"
+            ]
+        },
+        {
+            "tag": "show_vegetables",
+            "patterns": [
+                "show vegetables",
+                "what vegetables are available",
+                "vegetable list",
+                "available vegetables",
+                "display vegetables",
+                "do you have vegetables"
+            ]
+        },
+        {
+            "tag": "show_fruits",
+            "patterns": [
+                "show fruits",
+                "fruit list",
+                "available fruits",
+                "display fruits",
+                "what fruits are available",
+                "do you have fruits"
+            ]
+        },
+        {
+            "tag": "dairy_products",
+            "patterns": [
+                "show dairy products",
+                "milk products",
+                "do you have milk",
+                "show milk",
+                "dairy items",
+                "milk products available"
+            ]
+        },
+        {
+            "tag": "recommend_products",
+            "patterns": [
+                "recommend product",
+                "suggest something",
+                "what should i buy",
+                "give recommendation",
+                "best products",
+                "popular products",
+                "recommended items"
+            ]
+        },
+        {
+            "tag": "order_history",
+            "patterns": [
+                "where can i see my orders",
+                "order history",
+                "show my orders",
+                "my purchase history",
+                "previous orders",
+                "check my orders"
+            ]
+        },
+        {
+            "tag": "order_status",
+            "patterns": [
+                "where is my order",
+                "track my order",
+                "order status",
+                "is my order accepted",
+                "check order status"
+            ]
+        },
+        {
+            "tag": "farmer_dashboard",
+            "patterns": [
+                "open dashboard",
+                "farmer dashboard",
+                "how to access dashboard",
+                "show dashboard",
+                "dashboard help"
+            ]
+        },
+        {
+            "tag": "add_product",
+            "patterns": [
+                "how to add product",
+                "add vegetables",
+                "upload products",
+                "list my products",
+                "add fruits for sale",
+                "create new product"
+            ]
+        },
+        {
+            "tag": "view_orders",
+            "patterns": [
+                "how to see orders",
+                "incoming orders",
+                "buyer requests",
+                "show orders",
+                "view purchase requests"
+            ]
+        },
+        {
+            "tag": "accept_order",
+            "patterns": [
+                "how to accept order",
+                "approve buyer request",
+                "accept purchase request",
+                "confirm order",
+                "how to confirm order"
+            ]
+        },
+        {
+            "tag": "reject_order",
+            "patterns": [
+                "how to reject order",
+                "decline buyer request",
+                "cancel order request",
+                "reject purchase",
+                "how to reject request"
+            ]
+        },
+        {
+            "tag": "earnings",
+            "patterns": [
+                "check earnings",
+                "how much money i earned",
+                "my sales",
+                "show my earnings",
+                "income report"
+            ]
+        },
+        {
+            "tag": "thanks",
+            "patterns": [
+                "thank you",
+                "thanks",
+                "thanks bot",
+                "great thanks",
+                "thank you so much"
+            ]
+        }
+    ]
+}

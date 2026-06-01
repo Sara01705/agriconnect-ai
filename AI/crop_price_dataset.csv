@@ -1,0 +1,92 @@
+crop_name,demand,supply,season,rainfall,temperature,price
+Tomato,85,30,Kharif,180.5,28.2,45.50
+Tomato,90,25,Kharif,195.0,29.0,52.00
+Tomato,55,75,Rabi,45.2,20.5,18.00
+Tomato,60,65,Rabi,30.0,18.5,22.00
+Tomato,70,50,Summer,95.0,32.5,35.00
+Tomato,40,85,Rabi,50.0,21.0,15.50
+Tomato,95,15,Summer,110.0,34.0,58.00
+Tomato,80,40,Kharif,160.0,27.5,40.00
+Tomato,50,80,Summer,80.0,33.0,25.00
+Tomato,75,35,Rabi,40.0,19.0,28.00
+Onion,90,20,Rabi,55.0,22.5,58.00
+Onion,95,15,Rabi,45.0,21.0,65.00
+Onion,70,60,Kharif,140.0,27.0,30.00
+Onion,75,55,Kharif,150.0,26.5,32.50
+Onion,80,40,Summer,90.0,33.5,42.00
+Onion,85,30,Summer,100.0,34.0,48.00
+Onion,50,80,Rabi,60.0,20.0,20.00
+Onion,60,70,Kharif,130.0,28.0,26.00
+Onion,88,25,Rabi,48.0,21.5,55.00
+Onion,92,18,Summer,98.0,32.8,62.00
+Wheat,80,45,Rabi,75.0,15.5,24.50
+Wheat,85,40,Rabi,80.0,16.0,26.00
+Wheat,90,30,Rabi,65.0,14.5,28.50
+Wheat,60,70,Rabi,90.0,18.0,19.00
+Wheat,70,60,Rabi,85.0,17.0,21.50
+Wheat,95,25,Rabi,55.0,13.8,32.00
+Wheat,75,50,Rabi,70.0,15.0,23.00
+Wheat,88,35,Rabi,60.0,14.0,27.50
+Wheat,65,65,Rabi,95.0,19.0,18.50
+Wheat,72,55,Rabi,82.0,16.5,22.00
+Rice,90,50,Kharif,240.0,30.0,28.00
+Rice,95,45,Kharif,260.0,31.5,31.50
+Rice,85,55,Kharif,220.0,29.5,26.00
+Rice,75,70,Kharif,280.0,32.0,21.00
+Rice,80,60,Kharif,230.0,30.5,24.50
+Rice,98,35,Kharif,210.0,28.5,35.00
+Rice,88,48,Kharif,250.0,30.0,29.00
+Rice,92,40,Kharif,245.0,31.0,33.00
+Rice,70,75,Kharif,300.0,33.0,18.00
+Rice,78,65,Kharif,270.0,31.8,23.50
+Potato,70,60,Whole Year,90.0,24.0,15.00
+Potato,75,50,Whole Year,85.0,23.0,17.50
+Potato,80,40,Whole Year,95.0,25.0,20.00
+Potato,85,30,Whole Year,75.0,22.0,23.50
+Potato,90,20,Whole Year,70.0,21.0,28.00
+Potato,55,75,Whole Year,110.0,26.0,12.00
+Potato,60,70,Whole Year,100.0,25.5,13.50
+Potato,65,65,Whole Year,105.0,24.8,14.50
+Potato,88,25,Whole Year,80.0,22.5,26.00
+Potato,92,15,Whole Year,65.0,20.5,31.00
+Cotton,80,45,Kharif,120.0,32.0,52.00
+Cotton,85,35,Kharif,110.0,31.5,58.00
+Cotton,90,25,Kharif,100.0,30.0,66.00
+Cotton,60,75,Kharif,140.0,34.0,40.00
+Cotton,70,60,Kharif,130.0,33.0,46.50
+Cotton,95,15,Kharif,90.0,29.0,75.00
+Cotton,75,50,Kharif,125.0,32.5,49.00
+Cotton,88,30,Kharif,105.0,30.5,62.00
+Cotton,65,70,Kharif,135.0,33.5,43.00
+Cotton,72,55,Kharif,115.0,31.0,48.00
+Maize,75,50,Kharif,160.0,29.0,18.00
+Maize,80,40,Kharif,170.0,28.5,21.00
+Maize,85,30,Kharif,150.0,27.5,24.50
+Maize,60,70,Kharif,190.0,31.0,14.50
+Maize,70,60,Kharif,180.0,30.0,16.50
+Maize,90,20,Kharif,140.0,26.5,29.00
+Maize,78,45,Kharif,165.0,28.8,19.50
+Maize,88,25,Kharif,145.0,27.0,27.00
+Maize,65,65,Kharif,185.0,30.5,15.50
+Maize,72,55,Kharif,175.0,29.5,17.50
+Tomato,88,22,Kharif,182.0,28.0,49.00
+Tomato,58,72,Rabi,42.0,20.0,19.50
+Tomato,92,18,Summer,105.0,33.5,56.00
+Onion,92,16,Rabi,47.0,21.0,63.00
+Onion,72,58,Kharif,142.0,26.8,31.00
+Onion,82,38,Summer,92.0,33.0,44.50
+Wheat,82,42,Rabi,72.0,15.0,25.00
+Wheat,92,28,Rabi,62.0,14.0,30.00
+Wheat,68,62,Rabi,88.0,17.5,20.00
+Rice,92,42,Kharif,252.0,31.0,32.50
+Rice,76,68,Kharif,278.0,32.5,22.00
+Rice,86,52,Kharif,235.0,30.0,27.00
+Potato,72,58,Whole Year,88.0,23.5,16.00
+Potato,82,38,Whole Year,92.0,24.5,21.50
+Potato,62,68,Whole Year,102.0,25.0,14.00
+Cotton,82,42,Kharif,118.0,31.8,55.00
+Cotton,92,22,Kharif,98.0,29.5,70.00
+Cotton,68,62,Kharif,132.0,32.8,47.50
+Maize,76,48,Kharif,162.0,28.8,18.50
+Maize,86,28,Kharif,148.0,27.2,25.50
+Maize,68,62,Kharif,182.0,30.2,16.00
