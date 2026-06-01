@@ -241,9 +241,13 @@ Route::post('/chatbot',[App\Http\Controllers\ChatbotController::class,'ask']);
 Route::get('/admin/verify-farmer/{id}', [AdminController::class, 'verifyFarmer']);
 Route::post('/admin/update-availability/{id}', [AdminController::class, 'updateAvailability']);
 Route::post('/cancel-request/{id}', [BuyRequestController::class, 'cancel']);
+
 Route::get('/health', function () {
     return response('OK', 200);
 });
 Route::get('/test123', function () {
     return 'HELLO_RENDER';
+});
+Route::get('/routes-test', function () {
+    return 'ROUTES_LOADED';
 });
